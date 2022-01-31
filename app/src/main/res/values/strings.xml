@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Roots of the Quadratic Equation</string>
+    <string name="textView">\"Choose language\"</string>
+    <string name="textView2">\"Wybierz język\"</string>
+    <string name="RadioGroup1">\"nie wiem\"</string>
+</resources>
