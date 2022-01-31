@@ -61,7 +61,7 @@ public class DisplayPolishActivity extends AppCompatActivity {
                 answer[2] = Double.toString(x1);
                 answer[3] = "";
                 return answer;
-                Log.i("","");
+
             } else {
                 x1 = (-b + Math.sqrt(delta)) / (2 * a);
                 x2 = (-b - Math.sqrt(delta)) / (2 * a);
