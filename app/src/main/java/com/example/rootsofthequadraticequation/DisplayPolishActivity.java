@@ -2,7 +2,9 @@ package com.example.rootsofthequadraticequation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +17,7 @@ public class DisplayPolishActivity extends AppCompatActivity {
 
     EditText editTextNumberDecimal_A, editTextNumberDecimal_B, editTextNumberDecimal_C;
     TextView textView_function,textView_delta, textView_info, textView_x1, textView_x2;
-
+    int defaultTextColor;
     public String[] countDelta(Float a, Float b, Float c){
         String[] result = new String[3];
         double x1;
@@ -40,7 +42,11 @@ public class DisplayPolishActivity extends AppCompatActivity {
                 //0=bx+c x=-c/b
                 answer[0] = "nie istnieje";
                 answer[1] = result[1];
-                answer[2] = Float.toString(-c / b);
+                x1 = -c / b;
+                if (x1 == -0.0){
+                    x1 = Float.valueOf(0);
+                }
+                answer[2] = Double.toString(x1);
                 answer[3] = "";
                 return answer;
             }
@@ -111,34 +117,34 @@ public class DisplayPolishActivity extends AppCompatActivity {
         Log.i("createF()","factorB: "+factorB);
         Log.i("createF()","factorC: "+factorC);
         Float fFactorA, fFactorB, fFactorC;
+        //
+
         try {
+            editTextNumberDecimal_A.setTextColor(defaultTextColor);
             fFactorA = Float.parseFloat((factorA));
-            editTextNumberDecimal_A.setTextColor(Color.BLACK);
         }
         catch (NumberFormatException e){
-            //wait
             fFactorA = Float.valueOf(0);
-            //int i = ;
             editTextNumberDecimal_A.setTextColor(Color.RED);
-            //editTextNumberDecimal_A.setText("0");
-
         }
         try {
+            editTextNumberDecimal_B.setTextColor(defaultTextColor);
             fFactorB = Float.parseFloat(factorB);
         }
         catch (NumberFormatException e){
             fFactorB = Float.valueOf(0);
-
+            editTextNumberDecimal_B.setTextColor(Color.RED);
         }
         try{
+            editTextNumberDecimal_C.setTextColor(defaultTextColor);
             fFactorC = Float.parseFloat((factorC));
-
         }
         catch (NumberFormatException e){
             fFactorC = Float.valueOf(0);
+            editTextNumberDecimal_C.setTextColor(Color.RED);
         }
         if (fFactorA != 0) {
-            f += new StringBuilder().append(fFactorA).append("*x2");
+            f += new StringBuilder().append(fFactorA).append("*x\u00B2");
         }
         else if(fFactorA == 0){
             //do nothing
@@ -152,7 +158,6 @@ public class DisplayPolishActivity extends AppCompatActivity {
         else{
             //fFactor = 0
             //do nothing
-
         }
 
         if (fFactorC > 0){
@@ -175,6 +180,8 @@ public class DisplayPolishActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_polish);
 
         editTextNumberDecimal_A = (EditText)findViewById(R.id.editTextNumberDecimal_A);
+         defaultTextColor = editTextNumberDecimal_A.getCurrentTextColor();
+
         editTextNumberDecimal_B = (EditText)findViewById(R.id.editTextNumberDecimal_B);
         editTextNumberDecimal_C = (EditText)findViewById(R.id.editTextNumberDecimal_C);
         textView_function = (TextView) findViewById(R.id.textView_function);
@@ -182,8 +189,6 @@ public class DisplayPolishActivity extends AppCompatActivity {
         textView_info = (TextView) findViewById(R.id.textView_info);
         textView_x1 = (TextView) findViewById(R.id.textView_x1);
         textView_x2 = (TextView) findViewById(R.id.textView_x2);
-
-
 
         editTextNumberDecimal_A.addTextChangedListener(new TextWatcher() {
             @Override
