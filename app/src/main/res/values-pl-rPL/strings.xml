@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Pierwiastki równania kwadratowego "</string>
+    <string name="textView3">Wprowadż dane:</string>
+    <string name="textView4">Wpółczynnik a:</string>
+    <string name="texView7">Współczynnik b:</string>
+    <string name="textView6">Wpółczynnik c:</string>
+    <string name="input_data">Wprowadż dane:</string>
+    <string name="coefficient_of_x2">Współczynnik a:</string>
+    <string name="constant">Współczynnik c:</string>
+    <string name="coefficient_of_x">Współczynnik b:</string>
+</resources>

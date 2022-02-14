@@ -3,68 +3,261 @@ package com.example.rootsofthequadraticequation;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 //import android.widget.RadioButton;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.view.View;
+import android.widget.TextView;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    RadioGroup RadioGroup1;
+    EditText editTextNumberDecimal_A, editTextNumberDecimal_B, editTextNumberDecimal_C;
+    TextView textView_function,textView_delta, textView_info, textView_x1, textView_x2;
+    int defaultTextColor;
 
-    Button langButton;
+    public String[] countDelta(Float a, Float b, Float c){
+        String[] result = new String[3];
+        double x1;
+        double x2;
+        String[] answer = new String[4];
+        String langInfo = String.valueOf(Locale.getDefault().getLanguage());
+        if ("pl".equals(langInfo)){
+            result[0] = "Równanie nie posiada rozwiązań.";
+            result[1] = "Równanie posiada jedno rozwiązanie.";
+            result[2] = "Równanie posiada dwa rozwiązania";
+        }
+        else{
+            result[0]= "The roots do not exist.";
+            result[1]="The roots are real and equal.";
+            result[2]="The roots are real and distinct.";
+        }
 
-    RadioButton polski;
-    RadioButton english;
+        Float delta;
+        delta = b*b - 4*a*c;
+        answer[0]=Float.toString(delta);
+        if (a == 0) {
+            if (b == 0) {
+                answer[0] = "not exist.";
+                answer[1] = result[0];
+                answer[2] = "";
+                answer[3] = "";
+                return answer;
+            }
+            else {
 
+                //0=bx+c x=-c/b
+                answer[0] = "not exist.";
+                answer[1] = result[1];
+                x1 = -c / b;
+                if (x1 == -0.0){
+                    x1 = Float.valueOf(0);
+                }
+                answer[2] = Double.toString(x1);
+                answer[3] = "";
+                return answer;
+            }
+        }
+        else {
+            if (delta < 0) {
+                answer[1] = result[0];
+                answer[2] = "";
+                answer[3] = "";
+                return answer;
+            }
+            else if (delta == 0) {
+                x1 = Math.round((-b) / (2 * a));
+                if (x1 == -0) {
+                    x1 = Float.valueOf(0);
+                }
+                answer[1] = result[1];
+                answer[2] = Double.toString(x1);
+                answer[3] = "";
+                return answer;
 
+            } else {
+                x1 = Math.round(-b + Math.sqrt(delta)) / (2 * a);
+                x2 = Math.round(-b - Math.sqrt(delta)) / (2 * a);
+                answer[1] = result[2];
+                answer[2] = Double.toString(x1);
+                answer[3] = Double.toString(x2);
+                return answer;
+            }
+        }
+    }
+
+    public void setResults(String[] data){
+        //temp_delta = "delta: %s",data[0];
+        //temp_delta
+        textView_delta.setText(new StringBuilder().append("delta: ").append(data[0]).toString());
+        textView_info.setText(data[1]);
+        if (data[2] != ""){
+            textView_x1.setText(new StringBuilder().append("x1 = ").append(data[2]));
+        }
+        else{
+            textView_x1.setText("");
+        }
+        if (data[3] != "") {
+            //t.setText(Html.fromHtml("7<sup>2</sup>"));
+            textView_x2.setText(new StringBuilder().append("x2 = ").append(data[3]));
+        }
+        else{
+            textView_x2.setText("");
+        }
+    }
+
+    public String createF(){
+        String f = "y = ";
+        String factorA = editTextNumberDecimal_A.getText().toString();
+        if (factorA.equals("")){
+            factorA="0";
+        }
+        String factorB = editTextNumberDecimal_B.getText().toString();
+        if (factorB.equals("")){
+            factorB="0";
+        }
+        String factorC = editTextNumberDecimal_C.getText().toString();
+        if (factorC.equals("")){
+            factorC="0";
+        }
+
+        Log.i("createF()","factorA: "+factorA);
+        Log.i("createF()","factorB: "+factorB);
+        Log.i("createF()","factorC: "+factorC);
+        Float fFactorA, fFactorB, fFactorC;
+        try {
+            editTextNumberDecimal_A.setTextColor(defaultTextColor);
+            fFactorA = Float.parseFloat((factorA));
+        }
+        catch (NumberFormatException e){
+            fFactorA = Float.valueOf(0);
+            editTextNumberDecimal_A.setTextColor(Color.RED);
+        }
+        try {
+            editTextNumberDecimal_B.setTextColor(defaultTextColor);
+            fFactorB = Float.parseFloat(factorB);
+        }
+        catch (NumberFormatException e){
+            fFactorB = Float.valueOf(0);
+            editTextNumberDecimal_B.setTextColor(Color.RED);
+        }
+        try{
+            editTextNumberDecimal_C.setTextColor(defaultTextColor);
+            fFactorC = Float.parseFloat((factorC));
+        }
+        catch (NumberFormatException e){
+            fFactorC = Float.valueOf(0);
+            editTextNumberDecimal_C.setTextColor(Color.RED);
+        }
+        if (fFactorA != 0) {
+            //t.setText(Html.fromHtml("7<sup>2</sup>"));
+            f += new StringBuilder().append(fFactorA).append("*x\u00B2");
+            //X\u00B2
+            //f += new StringBuilder().append(String.valueOf(Html.fromHtml("<sup>2</sup>")));
+        }
+        else if(fFactorA == 0){
+            //do nothing
+        }
+        if (fFactorB < 0){
+            f += new StringBuilder().append(fFactorB).append("*x");
+        }
+        else if(fFactorB > 0){
+            f += new StringBuilder().append("+").append(fFactorB).append("*x");
+        }
+        else{
+            //fFactor = 0
+            //do nothing
+
+        }
+
+        if (fFactorC > 0){
+            f += new StringBuilder().append("+").append(fFactorC);
+        }
+        else if (fFactorC < 0){
+            f += new StringBuilder().append(fFactorC);
+        }
+        else{
+            //do nothing
+        }
+        String[] data = countDelta(fFactorA,fFactorB,fFactorC);
+        setResults(data);
+        return f;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RadioGroup1=(RadioGroup)findViewById(R.id.RadioGroup1);
-        polski =  (RadioButton)findViewById(R.id.rdbpolski);
-        english  = (RadioButton)findViewById(R.id.rdbenglish);
-        langButton  = (Button)findViewById(R.id.btnlang);
+        editTextNumberDecimal_A = (EditText)findViewById(R.id.editTextNumberDecimal_A);
+        defaultTextColor = editTextNumberDecimal_A.getCurrentTextColor();
+        editTextNumberDecimal_B = (EditText)findViewById(R.id.editTextNumberDecimal_B);
+        editTextNumberDecimal_C = (EditText)findViewById(R.id.editTextNumberDecimal_C);
+        textView_function = (TextView) findViewById(R.id.textView_function);
+        textView_delta = (TextView) findViewById(R.id.textView_delta);
+        textView_info = (TextView) findViewById(R.id.textView_info);
+        textView_x1 = (TextView) findViewById(R.id.textView_x1);
+        textView_x2 = (TextView) findViewById(R.id.textView_x2);
 
-        /*langButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                String strTemp;
-                if (polski.isChecked()){
-                    strTemp = "Wybrano polski";
-                }
-                else{
-                    strTemp = "Wybrano english";
-                }
-                Log.i("funkcja onClick:",strTemp);
+
+
+        editTextNumberDecimal_A.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //editTextNumberDecimal_A.setTextColor(Color.BLACK);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //textView_function.setText(createF());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                textView_function.setText(createF());
             }
         });
+        editTextNumberDecimal_B.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-         */
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //textView_function.setText(createF());
+            }
 
-    }
+            @Override
+            public void afterTextChanged(Editable s) {
+                textView_function.setText(createF());
+            }
+        });
+        editTextNumberDecimal_C.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    public void buttonData(View view){
-        //wciśnięcie klawiasza wybierz/choose
-        //int temp;
-        //temp = RadioGroup1.getCheckedRadioButtonId();
-        //Log.i("funkcja buttonData:","temp = "+temp);
-        Intent intent = null;
-        if (polski.isChecked()){
-            Log.i("Wciśnieto klawisz", "Wybrano pl");
-            intent = new Intent(this, DisplayPolishActivity.class);
-        }
-        else if (english.isChecked()){
-            Log.i("Wciśnięto klawisz", "Wybramo eng");
-            intent = new Intent(this, DisplayEnglishActivity.class);
-        }
-        startActivity(intent);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //textView_function.setText(createF());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                textView_function.setText(createF());
+            }
+        });
     }
 }

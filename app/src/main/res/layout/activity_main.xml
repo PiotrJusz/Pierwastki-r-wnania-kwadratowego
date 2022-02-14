@@ -6,67 +6,136 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnlang"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:onClick="buttonData"
-        android:text="Wybierz / Choose"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="201dp"
-        android:layout_height="41dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/textView"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="195dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="16dp"
-        android:scrollbarThumbHorizontal="@android:color/primary_text_light_nodisable"
-        android:text="@string/textView2"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/input_data"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/RadioGroup1"
-        android:layout_width="193dp"
-        android:layout_height="101dp"
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="150dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/coefficient_of_x2"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextNumberDecimal_A"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="150dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/constant"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextNumberDecimal_C"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="150dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/coefficient_of_x"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextNumberDecimal_B"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextNumberDecimal_A"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
+        android:id="@+id/editTextNumberDecimal_B"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal_A" />
+
+    <EditText
+        android:id="@+id/editTextNumberDecimal_C"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal_B" />
+
+    <TextView
+        android:id="@+id/textView_function"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-        <RadioButton
-            android:id="@+id/rdbpolski"
-            android:layout_width="193dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:checked="false"
-            android:text="polski"
-            android:textSize="25dp" />
+    <TextView
+        android:id="@+id/textView_delta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_function" />
 
-        <RadioButton
-            android:id="@+id/rdbenglish"
-            android:layout_width="193dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.13"
-            android:checked="false"
-            android:text="english"
-            android:textSize="25dp" />
-    </RadioGroup>
+    <TextView
+        android:id="@+id/textView_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_delta" />
+
+    <TextView
+        android:id="@+id/textView_x1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_info" />
+
+    <TextView
+        android:id="@+id/textView_x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_x1" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

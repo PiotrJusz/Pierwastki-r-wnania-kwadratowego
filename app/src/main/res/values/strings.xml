@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Roots of the Quadratic Equation</string>
-    <string name="textView">\"Choose language\"</string>
-    <string name="textView2">\"Wybierz język\"</string>
-    <string name="RadioGroup1">\"nie wiem\"</string>
+    <string name="textView3">Input data:</string>
+    <string name="textView4">Coefficient of x2:</string>
+    <string name="texView7">Coefficient of x:</string>
+    <string name="textView6">Constant:</string>
+    <string name="input_data">Input data:</string>
+    <string name="coefficient_of_x2">Coefficient of x2</string>
+    <string name="constant">Constant:</string>
+    <string name="coefficient_of_x">Coefficient of x</string>
 </resources>
