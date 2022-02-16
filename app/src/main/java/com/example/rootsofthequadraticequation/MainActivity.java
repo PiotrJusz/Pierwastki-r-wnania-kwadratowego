@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     int defaultTextColor;
 
     public String[] countDelta(Float a, Float b, Float c){
+        //obliczenie delty i związanych z tym miejsc zerowych/pierwaistków równania kwadratowego
+        //zwrócenie tablicy answer z wartościa delty, z informacją o ilości rozwiązań, wartościami x1 i x2
         String[] result = new String[3];
         double x1;
         double x2;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             result[1] = "Równanie posiada jedno rozwiązanie.";
             result[2] = "Równanie posiada dwa rozwiązania";
         }
-        else{
+        else{ //langinfo == eng
             result[0]= "The roots do not exist.";
             result[1]="The roots are real and equal.";
             result[2]="The roots are real and distinct.";
@@ -47,15 +49,19 @@ public class MainActivity extends AppCompatActivity {
         answer[0]=Float.toString(delta);
         if (a == 0) {
             if (b == 0) {
-                answer[0] = "not exist.";
+                //funkcja stała y=const
+                if ("pl".equals(langInfo)){
+                    answer[0] = "nie istnieje.";
+                }
+                else {
+                    answer[0] = "not exist.";
+                }
                 answer[1] = result[0];
                 answer[2] = "";
                 answer[3] = "";
-                return answer;
+                //return answer;
             }
-            else {
-
-                //0=bx+c x=-c/b
+            else {//funkcja liniowa y=bx+c >> x=-c/b
                 answer[0] = "not exist.";
                 answer[1] = result[1];
                 x1 = -c / b;
@@ -64,17 +70,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 answer[2] = Double.toString(x1);
                 answer[3] = "";
-                return answer;
+                //return answer;
             }
         }
-        else {
-            if (delta < 0) {
+        else {//a>0 and a<0 >> funkcja kwadratowa
+            if (delta < 0) {//brak rozwiązań dla delta<0
                 answer[1] = result[0];
                 answer[2] = "";
                 answer[3] = "";
-                return answer;
+                //return answer;
             }
-            else if (delta == 0) {
+            else if (delta == 0) {//jedno rozwiązanie dla funkcji kwadratowej, delta=0
                 x1 = Math.round((-b) / (2 * a));
                 if (x1 == -0) {
                     x1 = Float.valueOf(0);
@@ -82,58 +88,64 @@ public class MainActivity extends AppCompatActivity {
                 answer[1] = result[1];
                 answer[2] = Double.toString(x1);
                 answer[3] = "";
-                return answer;
+                //return answer;
 
-            } else {
+            } else {//delta>0, dwa rozwiązania funkcji kwadratowej
                 x1 = Math.round(-b + Math.sqrt(delta)) / (2 * a);
                 x2 = Math.round(-b - Math.sqrt(delta)) / (2 * a);
                 answer[1] = result[2];
                 answer[2] = Double.toString(x1);
                 answer[3] = Double.toString(x2);
-                return answer;
+                //return answer;
             }
         }
+        return answer;
     }
 
     public void setResults(String[] data){
-        //temp_delta = "delta: %s",data[0];
-        //temp_delta
+        //data = countDelta = answer
+        //formatowanie i drukowanie wyników w głównym oknie aplikacji
+
+        //domyślne wartości:
         textView_delta.setText(new StringBuilder().append("delta: ").append(data[0]).toString());
         textView_info.setText(data[1]);
+        textView_x1.setText("");
+        textView_x2.setText("");
+
+        //zmiana wartości domyślnych jeśli jeśli istnieje wartość dla x1 lub x2
         if (data[2] != ""){
             textView_x1.setText(new StringBuilder().append("x1 = ").append(data[2]));
-        }
-        else{
-            textView_x1.setText("");
         }
         if (data[3] != "") {
             //t.setText(Html.fromHtml("7<sup>2</sup>"));
             textView_x2.setText(new StringBuilder().append("x2 = ").append(data[3]));
         }
-        else{
-            textView_x2.setText("");
-        }
     }
 
     public String createF(){
+        //utworzenie funkcji y dla podanych przez użytkownika parametrów a, b, c
+        //wartośc domyślna
         String f = "y = ";
+        //pobranie podanego przez użytkownika wartości dla a,b i c
         String factorA = editTextNumberDecimal_A.getText().toString();
-        if (factorA.equals("")){
-            factorA="0";
-        }
         String factorB = editTextNumberDecimal_B.getText().toString();
-        if (factorB.equals("")){
-            factorB="0";
-        }
         String factorC = editTextNumberDecimal_C.getText().toString();
-        if (factorC.equals("")){
-            factorC="0";
+        //przypisanie 0 jeśli wprowadzona wartośc nie istnieje (jest równa "")
+        if (factorA.equals("") || factorB.equals("") || factorC.equals("")){
+            if(factorA.equals("")){
+                factorA= String.valueOf(0);
+            }
+            if(factorB.equals("")){
+                factorB= String.valueOf(0);
+            }
+            if(factorC.equals("")){
+                factorC= String.valueOf(0);
+            }
         }
 
-        Log.i("createF()","factorA: "+factorA);
-        Log.i("createF()","factorB: "+factorB);
-        Log.i("createF()","factorC: "+factorC);
         Float fFactorA, fFactorB, fFactorC;
+        //sprawdzanie poprawności wprowadzanycg danych przez użytkownika
+        //zmiana domyślnego koloru tekstu na czerwony w momencie wykrycia błędu
         try {
             editTextNumberDecimal_A.setTextColor(defaultTextColor);
             fFactorA = Float.parseFloat((factorA));
@@ -158,14 +170,10 @@ public class MainActivity extends AppCompatActivity {
             fFactorC = Float.valueOf(0);
             editTextNumberDecimal_C.setTextColor(Color.RED);
         }
+        //tworzenie wyrażenia tekstowego przedstawiające wyrażenie funkcji (zmienic ten komentarz!)
         if (fFactorA != 0) {
-            //t.setText(Html.fromHtml("7<sup>2</sup>"));
+            //dopisanie x2
             f += new StringBuilder().append(fFactorA).append("*x\u00B2");
-            //X\u00B2
-            //f += new StringBuilder().append(String.valueOf(Html.fromHtml("<sup>2</sup>")));
-        }
-        else if(fFactorA == 0){
-            //do nothing
         }
         if (fFactorB < 0){
             f += new StringBuilder().append(fFactorB).append("*x");
@@ -173,20 +181,11 @@ public class MainActivity extends AppCompatActivity {
         else if(fFactorB > 0){
             f += new StringBuilder().append("+").append(fFactorB).append("*x");
         }
-        else{
-            //fFactor = 0
-            //do nothing
-
-        }
-
         if (fFactorC > 0){
             f += new StringBuilder().append("+").append(fFactorC);
         }
         else if (fFactorC < 0){
             f += new StringBuilder().append(fFactorC);
-        }
-        else{
-            //do nothing
         }
         String[] data = countDelta(fFactorA,fFactorB,fFactorC);
         setResults(data);
@@ -207,55 +206,44 @@ public class MainActivity extends AppCompatActivity {
         textView_info = (TextView) findViewById(R.id.textView_info);
         textView_x1 = (TextView) findViewById(R.id.textView_x1);
         textView_x2 = (TextView) findViewById(R.id.textView_x2);
-
-
-
+        //dodanie interfejsu TextChangedListener dla pol a,b i c
+        //
         editTextNumberDecimal_A.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //editTextNumberDecimal_A.setTextColor(Color.BLACK);
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //textView_function.setText(createF());
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-
+                //dynamiczne wypisywanie zmiany wspólczynnika a w okno główne w miescju na wyrażenie funkcyje
                 textView_function.setText(createF());
             }
         });
         editTextNumberDecimal_B.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //textView_function.setText(createF());
             }
-
             @Override
             public void afterTextChanged(Editable s) {
+                //dynamiczne wypisywanie zmiany wspólczynnika b w okno główne w miescju na wyrażenie funkcyje
                 textView_function.setText(createF());
             }
         });
         editTextNumberDecimal_C.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //textView_function.setText(createF());
             }
-
             @Override
             public void afterTextChanged(Editable s) {
+                //dynamiczne wypisywanie zmiany wspólczynnika a w okno główne w miescju na wyrażenie funkcyje
                 textView_function.setText(createF());
             }
         });
